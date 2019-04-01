@@ -59,6 +59,45 @@
 
 <script>
 
+function playSound(e) {
+  // const is a constant variable
+  // querySelector gets the first element in the document that matches a specified css selector
+  // selecting the audio element with the data key of the matching keyboard code (see https://keycode.info/)
+  const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+  // selecting the element with the class of .key and the attribute of data key with the matching keyboard code (see https://keycode.info/)
+  const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
+  
+  // if there is no key then dont fun the function
+  if (!audio) return;
+  // rewinds the audio back to 0
+  audio.currentTime = 0
+  // play the audio attached to the key
+  audio.play();
+    
+  key.classList.add("playing");
+}
+
+function removeTransition(e) {
+  // skip it if its not a transform
+  if (e.propertyName !== 'transform') return;
+  // remove the class of playing
+  this.classList.remove('playing');
+}
+
+const keys = document.querySelectorAll('.key');
+
+// loop through the array of keys
+for (let i=0; i<keys.length; i++) {
+  // add event listener for the end of the transition and run the funcion removeTransition (which removes the class of "playing")
+  keys[i].addEventListener('transitionend', removeTransition)
+}
+
+// this is the loop (below) that was originally used but I changed it for my own understanding of what is going on
+// keys.forEach(key => key.addEventListener('transitionend', removeTransition));
+
+ window.addEventListener('keydown', playSound);
+
+
 </script>
 
 
